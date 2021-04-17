@@ -1,0 +1,5 @@
+﻿{
+  "DataConnectionString": "server=localhost;database=nopcommerce;allowuservariables=True;user id=nopcommerce;password=5145919215",
+  "DataProvider": "mysql",
+  "RawDataSettings": {}
+}
