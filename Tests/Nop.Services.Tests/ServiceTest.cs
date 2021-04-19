@@ -86,6 +86,13 @@ namespace Nop.Services.Tests
                         SystemName = "CurrencyExchange.TestProvider",
                         FriendlyName = "Test exchange rate provider",
                         Installed = true
+                    }, 
+                    new PluginDescriptor(typeof(TestCustomerRoleDiscountRequirementRule).Assembly)
+                    {
+                        PluginType = typeof(TestCustomerRoleDiscountRequirementRule),
+                        SystemName ="TestCustomerRoleDiscountRequirementRule",
+                        FriendlyName="Test Customer Role Discount Requirement Rule",
+                        Installed = true
                     }
                 }
             };

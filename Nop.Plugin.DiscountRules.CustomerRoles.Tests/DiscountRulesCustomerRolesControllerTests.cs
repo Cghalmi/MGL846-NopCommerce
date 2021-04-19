@@ -46,6 +46,7 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
         private readonly Mock<IRepository<PermissionRecordCustomerRoleMapping>> _permissionRecordCustomerRoleMapping = new Mock<IRepository<PermissionRecordCustomerRoleMapping>>();
         private readonly Mock<IStoreContext> _storeContext = new Mock<IStoreContext>();
 
+        [SetUp]
         public override void SetUp()
         {
 
@@ -162,7 +163,7 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
             var model = new RequirementModel()
             {
                 DiscountId = 3,
-                RequirementId = 0
+                RequirementId = 0                
             };
 
             RunWithTestServiceProvider(() =>
