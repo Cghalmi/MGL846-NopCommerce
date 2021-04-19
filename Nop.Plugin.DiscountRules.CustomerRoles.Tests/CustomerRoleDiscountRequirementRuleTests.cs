@@ -37,7 +37,7 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
         private const string SystemName = "TestCustomerRoleDiscountRequirementRule";
         private const string SettingsKey = "DiscountRequirement.MustBeAssignedToCustomerRole-{0}";
         private IDiscountPluginManager _discountPluginManager; 
-        private IRepository<CustomerCustomerRoleMapping> _customerCustomerRoleMapping;
+        private Mock<IRepository<CustomerCustomerRoleMapping>> _customerCustomerRoleMapping = new Mock<IRepository<CustomerCustomerRoleMapping>>();
         private readonly Mock<ICustomerService> _customerService = new Mock<ICustomerService>();
         private readonly Mock<IRepository<Discount>> _discountRepo = new Mock<IRepository<Discount>>();
         private readonly Mock<IRepository<DiscountRequirement>> _discountRequirementRepo = new Mock<IRepository<DiscountRequirement>>();
@@ -125,7 +125,7 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
             DiscountId = 1,
             Id = 2,
         };
-        private List<CustomerCustomerRoleMapping> rm;
+        private IQueryable<CustomerCustomerRoleMapping> rm;
         private IList<CustomerRole> Roles()
         {
             return new List<CustomerRole>
@@ -171,7 +171,7 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
                         CustomerRoleId = _customerRoleAdmin.Id,
                         CustomerId = 1
                     }
-                };
+                }.AsQueryable();
             _discountRepo.Setup(x => x.Table).Returns(Discounts().AsQueryable());
             _discountRepo.Setup(c => c.GetById(It.IsAny<int>())).Returns((int i) => Discounts().FirstOrDefault(c => c.Id == i));
             _discountRequirementRepo.Setup(x => x.Table).Returns(DiscountRequirements().AsQueryable());
@@ -179,11 +179,8 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
              {
                  i.Id = DiscountRequirements().Count() > 0 ? DiscountRequirements().Max(x => x.Id) + 1 : 1;
                  DiscountRequirements().Add(i);
-             });
-            _customerCustomerRoleMapping = _fakeDataStore.RegRepository<CustomerCustomerRoleMapping>();
-
-            _customerCustomerRoleMapping.Insert(rm);
-
+             }); 
+            _customerCustomerRoleMapping.Setup(x => x.Table).Returns(rm);
             _customerService.Setup(x => x.GetCustomerRoles(It.IsAny<Customer>(), false)).Returns((Customer i, bool f) =>
             {
                 var roles = Roles().Where(y => rm.Where(x => x.CustomerId == i.Id).Select(x => x.CustomerRoleId).Contains(y.Id));
@@ -227,16 +224,14 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
                     Store = null,
                     Customer = null
                 });
-
-
+                 
                 Assert.IsInstanceOf<DiscountRequirementValidationResult>(result);
                 Assert.AreEqual(result.IsValid, false);
-
-
+                 
             });
         }
         [Test]
-        public void CheckRequirement_restrictedRoleId_Null()
+        public void CheckRequirement_restrictedRoleId_NotExist()
         {
             RunWithTestServiceProvider(() =>
             {
@@ -273,7 +268,7 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
 
             Assert.IsInstanceOf<DiscountRequirementValidationResult>(result);
             Assert.AreEqual(result.IsValid, true);
-
+            EngineContext.Replace(null);
         }
     }
 }
