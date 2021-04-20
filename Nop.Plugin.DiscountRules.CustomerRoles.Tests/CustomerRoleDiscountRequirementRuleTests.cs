@@ -34,8 +34,7 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
     [TestFixture]
     public class CustomerRoleDiscountRequirementRuleTests : ServiceTest
     {
-        private const string SystemName = "TestCustomerRoleDiscountRequirementRule";
-        private const string SettingsKey = "DiscountRequirement.MustBeAssignedToCustomerRole-{0}";
+        private const string SystemName = "TestCustomerRoleDiscountRequirementRule"; 
         private IDiscountPluginManager _discountPluginManager; 
         private Mock<IRepository<CustomerCustomerRoleMapping>> _customerCustomerRoleMapping = new Mock<IRepository<CustomerCustomerRoleMapping>>();
         private readonly Mock<ICustomerService> _customerService = new Mock<ICustomerService>();

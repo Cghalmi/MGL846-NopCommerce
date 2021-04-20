@@ -42,8 +42,6 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
         private readonly Mock<IRepository<DiscountRequirement>> _discountRequirementRepo = new Mock<IRepository<DiscountRequirement>>();
         private readonly Mock<IRepository<DiscountUsageHistory>> _discountUsageHistoryRepo = new Mock<IRepository<DiscountUsageHistory>>();
         private readonly Mock<IRepository<Order>> _orderRepo = new Mock<IRepository<Order>>();
-        private readonly Mock<IRepository<PermissionRecord>> _permissionRecord = new Mock<IRepository<PermissionRecord>>();
-        private readonly Mock<IRepository<PermissionRecordCustomerRoleMapping>> _permissionRecordCustomerRoleMapping = new Mock<IRepository<PermissionRecordCustomerRoleMapping>>();
         private readonly Mock<IStoreContext> _storeContext = new Mock<IStoreContext>();
 
         [SetUp]
@@ -109,7 +107,7 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
         }
 
         [Test]
-        public void ConfigureDiscountBadRequest()
+        public void ConfigureDiscount_Bad_Request()
         {
 
             var discountRulesCustomerRoles = new DiscountRulesCustomerRolesController(_customerService.Object,
@@ -130,7 +128,7 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
             Assert.IsTrue(resutlObj.Errors.Count() > 0);
         }
         [Test]
-        public void ConfigureDiscountCreateNew()
+        public void ConfigureDiscount_Create_New_Requirment()
         {
             var discountRulesCustomerRoles = new DiscountRulesCustomerRolesController(_customerService.Object,
                                                   _discountService, _localizationService.Object, _permissionService.Object, _settingService.Object);
@@ -155,7 +153,7 @@ namespace Nop.Plugin.DiscountRules.CustomerRoles.Tests
             });
         }
         [Test]
-        public void ConfigureDiscountNotExist()
+        public void ConfigureDiscount_Not_Exist()
         {
             var discountRulesCustomerRoles = new DiscountRulesCustomerRolesController(_customerService.Object,
                                                   _discountService, _localizationService.Object, _permissionService.Object, _settingService.Object);
